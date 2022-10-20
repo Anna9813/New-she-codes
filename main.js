@@ -97,22 +97,6 @@ function handelSubmit(event) {
     search(cityInputElement.value);
 }
 
-function dislayFahrenheitTemperature(event) {
-    event.preventDefault();
-    let temperatureElement = document.querySelector("#temperature");
-    celsiusLink.classList.remove("active");
-    fahrenheitLink.classList.add("active");
-    let fahrenheitTemperature = (celciusTemperature * 9) / 5 + 32;
-    temperatureElement.innerHTML =  Math.round(fahrenheitTemperature);
-}
-function displayCelciusTemperature(event) {
-    event.preventDefault();
-    let temperatureElement = document.querySelector("#temperature");
-    celsiusLink.classList.add("active");
-    fahrenheitLink.classList.remove("active");
-    temperatureElement.innerHTML = Math.round(celciusTemperature);
-}
-
 function searchLocation(position) {
   let apiKey = "8c48afa47a9a9c24f3500c7039d50aaa";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
@@ -123,16 +107,8 @@ function getCurrentLocation(event) {
   navigator.geolocation.getCurrentPosition(searchLocation);
 }
 
-let celciusTemperature = null;
-
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handelSubmit);
-
-let fahrenheitLink = document.querySelector("#fahrenheit-link");
-fahrenheitLink.addEventListener("click", dislayFahrenheitTemperature);
-
-let celsiusLink = document.querySelector("#celsius-link");
-celsiusLink.addEventListener("click", displayCelciusTemperature);
 
 let currentLocationButton = document.querySelector("#location-btn");
 currentLocationButton.addEventListener("click", getCurrentLocation);
