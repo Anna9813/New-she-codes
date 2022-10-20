@@ -1,3 +1,4 @@
+//Функция времени и даты
 function formateDate(timestamp) {
     let date = new Date(timestamp);
     let hours = date.getHours();
@@ -12,7 +13,7 @@ function formateDate(timestamp) {
     let day = days[date.getDay()];
     return `${day} ${hours}:${minutes}`;
 }
-
+//Функция изменения на странице температуры, города, влажности, ветра, даты, иконок
 function displayTemperature(response) {
     let temperatureElement = document.querySelector("#temperature");
     let cityElement = document.querySelector("#city");
@@ -37,12 +38,13 @@ function displayTemperature(response) {
     iconElement.setAttribute(
         "alt",  response.data.weather[0].description);
 }
+//Функция изменения города
 function search(city) {
     let apiKey = "8c48afa47a9a9c24f3500c7039d50aaa";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(displayTemperature);
 }
-
+//Функция изменения города в форме
 function handelSubmit(event) {
     event.preventDefault();
     let cityInputElement = document.querySelector("#city-input");
@@ -63,8 +65,18 @@ function displayCelciusTemperature(event) {
     celsiusLink.classList.add("active");
     fahrenheitLink.classList.remove("active");
     temperatureElement.innerHTML = Math.round(celciusTemperature);
-
 }
+
+function searchLocation(position) {
+  let apiKey = "8c48afa47a9a9c24f3500c7039d50aaa";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayTemperature);
+}
+function getCurrentLocation(event) {
+  event.preventDefault();
+  navigator.geolocation.getCurrentPosition(searchLocation);
+}
+
 let celciusTemperature = null;
 
 let form = document.querySelector("#search-form");
@@ -75,5 +87,8 @@ fahrenheitLink.addEventListener("click", dislayFahrenheitTemperature);
 
 let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelciusTemperature);
+
+let currentLocationButton = document.querySelector("#location-btn");
+currentLocationButton.addEventListener("click", getCurrentLocation);
 
 search("New York");
